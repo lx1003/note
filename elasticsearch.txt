@@ -1,0 +1,77 @@
+索引（indices）----database
+类型（type）----table
+文档（document）----row行
+字段（field）-----colums列
+
+查询索引 GET /_cat/indices?v
+
+创建索引 PUT /索引名
+
+```java
+PUT /liuxin //创建索引
+GET /liuxin //查询索引
+DELETE /liuxin//删除索引
+```
+
+映射配置
+
+映射是定义文档的过程，文档包含哪些字段，这些字段是否保存，是否索引，是否分词
+
+```json
+PUT liuxin/_mapping/goods
+{
+  "properties": {
+    "title":{
+      "type":"text",
+      "analyzer": "ik_max_word",
+      "store": true
+    },
+    "images":{
+      "type":"keyword",
+      "index": false
+    },
+    "price":{
+      "type":"long"
+    }
+  }
+}
+```
+
+是否保存取决于是否在查询结果集中展示该字段
+
+是否索引：取决于是否以该字段进行搜索
+
+是否分词：前提是字符串数据，必须以该字段进行检索。就应该使用分词（text）。指定分词器（ik_max_word)
+
+```json
+GET /liuxin/_mapping //查看映射
+```
+
+### 3.新增Document
+
+```json
+//默认ID
+POST /liuxin/goods
+{
+  "title":"小米手机，为发烧而生",
+  "image":"http://jd.com/xxx.jpg",
+  "price":"19999"
+}
+```
+
+```json
+//自定义ID，存在修改，不存在新增
+POST /liuxin/goods/1
+{
+  "title":"华为手机，251",
+  "image":"http://jd.com/xxx.jpg",
+  "price":"19999"
+}
+```
+
+### 4.删除数据
+
+```
+DELETE /索引库名/类型名/id值
+```
+
