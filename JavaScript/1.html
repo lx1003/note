@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>下载</title>
+	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+	$(function(){ 
+		$.ajax({
+			type:"post",
+			url:"http://127.0.0.1:8091/cloud/customer/export",
+			data:JSON.stringify(["1"]),
+			dataType:'json',
+			async:false,
+			responseType: 'arraybuffer',
+			headers:{'Content-Type':'application/json;charset=utf8','Authorization':'c3VwZXJfYWRtaW5fdGVzdDoxNTBhMzRjMTVhYzYxMWVhYWJmMzAwMTYzZTA2YTIyNjpmMWNiZTljZjUxNGQxMWVhODNkMTAwMTYzZTA2YTIyNjoxNTg1MTI1MjM1NDcw'},
+			success:function (data) {
+				getOutExcel("wd.xls",data);
+			}
+		});
+		function getOutExcel(fileName, res) {
+    let blob = new Blob([res], { type: 'application/x-xls' });
+    if (window.navigator.msSaveOrOpenBlob) {
+        //兼容 IE & EDGE
+        navigator.msSaveBlob(blob, fileName);
+    } else {
+        var link = document.createElement('a');
+        // 兼容不同浏览器的URL对象
+        const url = window.URL || window.webkitURL || window.moxURL
+        // 创建下载链接
+        link.href = url.createObjectURL(blob);
+        //命名下载名称
+        link.download = fileName;
+        //点击触发下载
+        link.click();
+        //下载完成进行释放
+        url.revokeObjectURL(link.href);
+    }
+}
+	});
+	
+	/*$(function(){ 
+		function download() {
+	 
+		    var xmlResquest = new XMLHttpRequest();
+		    xmlResquest.open("POST", "http://127.0.0.1:8091/cloud/customer/export", true);
+		    xmlResquest.setRequestHeader("Content-type", "application/json");
+		    xmlResquest.setRequestHeader("Authorization", "c3VwZXJfYWRtaW5fdGVzdDoxNTBhMzRjMTVhYzYxMWVhYWJmMzAwMTYzZTA2YTIyNjpmMWNiZTljZjUxNGQxMWVhODNkMTAwMTYzZTA2YTIyNjoxNTg1MTIwODU3OTk1");
+		    xmlResquest.responseType = "blob";
+		    xmlResquest.onload = function (oEvent) {
+				
+	                var content = xmlResquest.response;
+	                var elink = document.createElement('a');
+	                elink.download = "test.xlsx";
+	                elink.style.display = 'none';
+	                var blob = new Blob([content]);
+	                elink.href = URL.createObjectURL(blob);
+	                document.body.appendChild(elink);
+	                elink.click();
+	                document.body.removeChild(elink);
+	            };
+	            xmlResquest.send();
+		}
+	})*/
+</script>
+<script type="text/javascript">
+	window.onload({
+		
+	})
+</script>
+</body>
+</html>
