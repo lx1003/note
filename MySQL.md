@@ -83,6 +83,7 @@ default-character-set=utf8
 > 如出现“The server quit without updating PID file”
 >
 > 请检查/data pid等目录 是否存在与授权进行解决
+> 日志文件目录/var/log
 
 ## 7.启动MySQL服务
 
